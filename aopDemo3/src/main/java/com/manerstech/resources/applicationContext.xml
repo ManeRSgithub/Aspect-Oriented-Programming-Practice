@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd"> 
+        
+        <!-- service bean definitions here -->
+          <bean id="transId" class="com.manerstech.services.Transactions" />
+          <bean id="pTransId" class="com.manerstech.services.paytmTransaction" />
+        <!-- aspect bean definitions here -->
+        	<bean id="myLoggingId" class="com.manerstech.aspects.myLogging" />
+        	<bean id="mySecurityId" class="com.manerstech.aspects.mySecurity" />
+        <!-- AOP Configurations -->
+        	<aop:config>
+        		<!-- AOP Configurations for Logging -->
+        			<aop:aspect ref="myLoggingId">
+        				<aop:pointcut expression="execution(* com.manerstech.services.Transactions.*(..))" id="tLogId"/>
+        				<aop:before method="logging" pointcut-ref="tLogId"/>
+        			</aop:aspect>
+        			
+        			<aop:aspect ref="myLoggingId">
+        				<aop:pointcut expression="execution(* com.manerstech.services.paytmTransaction.*(..))" id="pLogId"/>
+        				<aop:before method="logging" pointcut-ref="pLogId"/>
+        			</aop:aspect>
+        		
+        		
+        		<!-- AOP Configurations for Security -->
+        			<aop:aspect ref="mySecurityId">
+        				<aop:pointcut expression="execution(* com.manerstech.services.Transactions.*(..))" id="tSecId"/>
+        				<aop:before method="security" pointcut-ref="tSecId"/>
+        			</aop:aspect>
+        			
+        			<aop:aspect ref="mySecurityId">
+        				<aop:pointcut expression="execution(* com.manerstech.services.paytmTransaction.*(..))" id="pSecId"/>
+        				<aop:before method="security" pointcut-ref="pSecId"/>
+        			</aop:aspect>
+        		
+        	</aop:config>
+
+</beans>
