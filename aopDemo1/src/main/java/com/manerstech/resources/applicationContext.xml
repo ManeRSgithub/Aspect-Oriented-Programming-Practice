@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd"> 
+        
+        <!-- bean definitions here -->
+        <bean id="TransServiceId" class="com.manerstech.services.TransactionServices" />
+		
+		<!-- Aspect bean definitions here -->
+		
+		<bean id="LoggingId" class="com.manerstech.aspects.myLogging" />
+		<bean id="SecurityId" class="com.manerstech.aspects.mySecurity" />
+		
+		<!-- AOP Configurations -->
+			<aop:config>
+				<!-- LoggingAspect -->
+				<aop:aspect ref="LoggingId">
+					<aop:pointcut expression="execution(* com.manerstech.services.TransactionServices.*())" id="loggingPointCut"/>
+					<aop:before method="Logging" pointcut-ref="loggingPointCut"/>
+				</aop:aspect>
+				
+				<!-- Security Aspect -->
+				<aop:aspect ref="SecurityId">
+					<aop:pointcut expression="execution(* com.manerstech.services.TransactionServices.*())" id="SecurityPointCut"/>
+					<aop:before method="Security" pointcut-ref="SecurityPointCut"/>
+				</aop:aspect>
+			
+			</aop:config>
+		
+		
+		
+</beans>
