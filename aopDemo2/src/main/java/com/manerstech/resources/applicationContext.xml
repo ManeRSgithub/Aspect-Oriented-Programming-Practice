@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd"> 
+        
+        <!-- service bean definitions here -->
+       		 <bean id="paytmTransId" class="com.manerstech.services.paytmTransactions" />
+        	 <bean id="TransId" class="com.manerstech.services.Transactions" />
+        <!-- aspect bean definitions here -->
+			<bean id="myLoggingId" class="com.manerstech.aspects.myLogging" />
+			<bean id="mySecurityId" class="com.manerstech.aspects.mySecurity" />
+			
+		<!-- aop config -->
+			<aop:config>
+				<!-- Logging configurations -->
+					<aop:aspect ref="myLoggingId">
+						<aop:pointcut expression="execution(* com.manerstech.services.Transactions.*(..))" id="tloggingId"/>
+						<aop:before method="Logging" pointcut-ref="tloggingId"/>
+					
+						
+					</aop:aspect>
+					<aop:aspect ref="myLoggingId">
+						<aop:pointcut expression="execution(* com.manerstech.services.paytmTransactions.*(..))" id="ploggingId"/>
+						<aop:before method="Logging" pointcut-ref="ploggingId"/>
+						
+						
+					</aop:aspect>
+				
+				<!-- Security configurations -->
+					<aop:aspect ref="mySecurityId">
+						<aop:pointcut expression="execution(* com.manerstech.services.Transactions.*(..))" id="tsecurityId"/>
+						<aop:before method="Security" pointcut-ref="tsecurityId"/>
+						
+						
+					</aop:aspect>
+					<aop:aspect ref="mySecurityId">
+						<aop:pointcut expression="execution(* com.manerstech.services.paytmTransactions.*(..))" id="psecurityId"/>
+						<aop:before method="Security" pointcut-ref="psecurityId"/>
+						
+						
+					</aop:aspect>
+			</aop:config>
+		
+		
+		
+</beans>
